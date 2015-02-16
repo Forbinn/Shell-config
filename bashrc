@@ -37,7 +37,6 @@ export PATH="${PATH}:/usr/sbin:/usr/bin:/sbin:/bin"
 
 export JAVA_HOME="/usr/lib/jvm/java-1.8.0/"
 
-export SVN="svn+ssh://kscm@koala-rendus.epitech.net/"
 export NAME="vincent leroy"
 
 export EDITOR='vim'
@@ -46,6 +45,7 @@ export PAGER='less'
 export SAVEHIST=1000
 export WATCH='all'
 
+# Kent VM
 export VM_CSVM="student@csvm2C56.kent.ac.uk"
 export VM_RAPTOR="vl67@raptor.kent.ac.uk"
 
@@ -76,10 +76,6 @@ alias vi='vim'
 alias svnci='svn ci -m "" && svn st'
 alias svnup='svn up && svn st'
 alias gitlist='git ls-tree --full-tree -r HEAD'
-
-# Application alias
-alias qnetsoul='/home/leroy_v/.QNetSoul/QNetSoul'
-alias netbeans='/home/leroy_v/NetBeans/netbeans-8.0.1/bin/netbeans'
 
 # utils alias
 alias pong='ping 8.8.8.8'
