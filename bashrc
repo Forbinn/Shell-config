@@ -45,10 +45,6 @@ export PAGER='less'
 export SAVEHIST=1000
 export WATCH='all'
 
-# Kent VM
-export VM_CSVM="student@csvm2C56.kent.ac.uk"
-export VM_RAPTOR="vl67@raptor.kent.ac.uk"
-
 # Prompt
 proml
 
