@@ -46,18 +46,16 @@ clean:
 distclean: clean
 	$(RM) $(NAME) $(NAME_DEBUG)
 
-re: distclean all
-
 debug: CFLAGS += -ggdb3
 debug: $(OBJS_DEBUG)
 	$(CC) $(OBJS_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
 
 $(OBJDIR)/%.debug.o: %.c
-	@$(CC) -MM -MF $(subst .debug.o,.debug.d,$@) -MP -MT $@ $(CFLAGS) $<
+	@$(CC) -MM -MF $(shell echo "$@" | sed 's/^\(.*\)\.o$$/\1\.d/g') -MP -MT $@ $(CFLAGS) $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/%.o: %.c
-	@$(CC) -MM -MF $(subst .o,.d,$@) -MP -MT $@ $(CFLAGS) $<
+	@$(CC) -MM -MF $(shell echo "$@" | sed 's/^\(.*\)\.o$$/\1\.d/g') -MP -MT $@ $(CFLAGS) $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ifneq "$(MAKECMDGOALS)" "clean"
