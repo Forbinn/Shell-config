@@ -22,7 +22,7 @@ set list
 set listchars=tab:»\ 
 set number
 set showcmd
-set mouse=a
+set mouse-=a
 set cursorline
 set nobackup
 set nowritebackup
@@ -30,6 +30,8 @@ set noswapfile
 set noremap
 set ofu=syntaxcomplete#Complete
 set completeopt="menu"
+set foldmethod=syntax
+set foldlevel=20
 
 " Doxygen comment
 let g:load_doxygen_syntax=1

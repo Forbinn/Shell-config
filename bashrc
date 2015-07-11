@@ -1,9 +1,15 @@
 #!/bin/bash
 
-function parse_git_branch() {
-    var="$(type -P git)"
+function repo() {
+    var="$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/git:\1/')"
+    if [ -z "$var" ]; then
+        if [ ! -z "$(svn info 2>&1 | grep URL)" ]; then
+            var="svn";
+        fi
+    fi
+
     if [ ! -z "$var" ]; then
-        git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \[\1\]/'
+        echo -n " [$var]"
     fi
 }
 
@@ -24,9 +30,9 @@ function proml() {
     fi
 
     if [ "$(id -u)" == "0" ]; then # root
-        export PS1="\d $RED\t $GREEN[\w]$BLUE\$(parse_git_branch) $LIGTH_BLUE$hostname$DEFAULT\n# "
+        export PS1="\d $RED\t $GREEN[\w]$BLUE\$(repo) $LIGTH_BLUE$hostname$DEFAULT\n# "
     else # user
-        export PS1="\d $RED\t $GREEN[\w]$BLUE\$(parse_git_branch) $LIGTH_BLUE$hostname$DEFAULT\n$ "
+        export PS1="\d $RED\t $GREEN[\w]$BLUE\$(repo) $LIGTH_BLUE$hostname$DEFAULT\n$ "
     fi
 }
 
@@ -72,6 +78,7 @@ alias vi='vim'
 alias svnci='svn ci -m "" && svn st'
 alias svnup='svn up && svn st'
 alias gitlist='git ls-tree --full-tree -r HEAD'
+alias record='fros'
 
 # utils alias
 alias pong='ping 8.8.8.8'
@@ -81,9 +88,16 @@ alias iftop='iftop -B'
 alias trenfr='translate -s freetranslation -f en -t fr'
 alias trfren='translate -s freetranslation -f fr -t en'
 
+# sqlite alias
+alias sqlite='sqlite3 -column -header -nullvalue \<null\>'
+
 # Disable core dumps
 ulimit -S -c 0
 
 if [ -f /usr/share/bash-completion/bash_completion ] && ! shopt -oq posix; then
     . /usr/share/bash-completion/bash_completion
+fi
+
+if [ -f /home/leroy_v/Kent/Concurrency_Parallelism/Kroc/bin/kroc-setup.sh ]; then
+    . /home/leroy_v/Kent/Concurrency_Parallelism/Kroc/bin/kroc-setup.sh
 fi

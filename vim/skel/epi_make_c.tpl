@@ -8,45 +8,60 @@
 ## Last update @@MDATE@@ @@MAUTHOR@@
 ##
 
-SRC			= main.c \
+SRCS		= main.c \
 
 CFLAGS		= -Wall -Wextra
 
 LDFLAGS		=
 
-NAME		=
+NAME		= a.out
 NAME_DEBUG	= $(NAME).debug
 
-OBJ			= $(SRC:.c=.o)
-OBJ_DEBUG	= $(SRC:.c=.debug.o)
+OBJDIR		= obj
+SRCDIRS		= $(shell find . -name "*.c" -exec dirname {} \; | uniq)
 
-RM			= rm -f
+OBJS		= $(SRCS:%.c=$(OBJDIR)/%.o)
+OBJS_DEBUG	= $(SRCS:%.c=$(OBJDIR)/%.debug.o)
+DEPS		= $(OBJS:%.o=%.d)
 
-CC			= gcc
+RM			:= rm -rf
+CC			?= gcc
+MAKE		:= make -C
+MKDIR		:= mkdir -p
 
-MAKE		= make -C
+all: directories $(NAME)
 
-all: $(NAME)
+directories:
+	@for dir in $(SRCDIRS); \
+	do \
+		$(MKDIR) $(OBJDIR)/$$dir; \
+	done
 
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
+$(NAME): $(OBJS)
+	$(CC) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 clean:
-	$(RM) $(OBJ) $(OBJ_DEBUG) *.swp *~ *#
+	$(RM) $(OBJDIR)
 
-fclean: clean
+distclean: clean
 	$(RM) $(NAME) $(NAME_DEBUG)
 
-re: fclean all
+re: distclean all
 
 debug: CFLAGS += -ggdb3
-debug: $(OBJ_DEBUG)
-	$(CC) $(OBJ_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
+debug: $(OBJS_DEBUG)
+	$(CC) $(OBJS_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
 
-%.debug.o: %.c
+$(OBJDIR)/%.debug.o: %.c
+	@$(CC) -MM -MF $(subst .debug.o,.debug.d,$@) -MP -MT $@ $(CFLAGS) $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: %.c
+$(OBJDIR)/%.o: %.c
+	@$(CC) -MM -MF $(subst .o,.d,$@) -MP -MT $@ $(CFLAGS) $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: all clean fclean re debug
+ifneq "$(MAKECMDGOALS)" "clean"
+-include $(DEPS)
+endif
+
+.PHONY: all directories clean distclean re debug

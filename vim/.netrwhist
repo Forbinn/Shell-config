@@ -1,11 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =9
-let g:netrw_dirhist_1='/home/leroy_v/Perso/Numisma/old/resources'
-let g:netrw_dirhist_2='/home/leroy_v/Perso/Tree'
-let g:netrw_dirhist_3='/home/leroy_v/Domea'
-let g:netrw_dirhist_4='/home/leroy_v/Domea/sigma_z_wave'
-let g:netrw_dirhist_5='/home/leroy_v/Domea'
-let g:netrw_dirhist_6='/home/leroy_v/Domea/sigma_z_wave'
-let g:netrw_dirhist_7='/usr/include/ncurses'
-let g:netrw_dirhist_8='/usr/include/openzwave'
-let g:netrw_dirhist_9='/usr/etc/openzwave'
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/leroy_v/Domotique/domea/box/share/network/message'
+let g:netrw_dirhist_2='/usr/src/debug/qtbase-opensource-src-5.4.2/src/corelib/kernel'
+let g:netrw_dirhist_3='/home/leroy_v/Domotique/domea/box/share/event'
+let g:netrw_dirhist_4='/home/leroy_v/Perso/Huffman/include'

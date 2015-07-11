@@ -11,6 +11,8 @@ function Epi_Header_Insert()
             0r ~/.vim/skel/epi_make_cpp.tpl
         endif
     elseif (expand("%:t") == 'main.cpp')
+        0r ~/.vim/skel/epi_main_cpp.tpl
+    elseif (expand("%:t") == 'main.c')
         0r ~/.vim/skel/epi_main.tpl
     else
         0r ~/.vim/skel/epi_%:e.tpl

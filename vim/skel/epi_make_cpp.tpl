@@ -8,45 +8,60 @@
 ## Last update @@MDATE@@ @@MAUTHOR@@
 ##
 
-SRC			= main.cpp \
+SRCS		= main.cpp \
 
 CXXFLAGS	= -Wall -Wextra
 
 LDFLAGS		=
 
-NAME		=
+NAME		= a.out
 NAME_DEBUG	= $(NAME).debug
 
-OBJ			= $(SRC:.cpp=.o)
-OBJ_DEBUG	= $(SRC:.cpp=.debug.o)
+OBJDIR		= obj
+SRCDIRS		= $(shell find . -name "*.cpp" -exec dirname {} \; | uniq)
 
-RM			= rm -f
+OBJS		= $(SRCS:%.cpp=$(OBJDIR)/%.o)
+OBJS_DEBUG	= $(SRCS:%.cpp=$(OBJDIR)/%.debug.o)
+DEPS		= $(OBJS:%.o=%.d)
 
-CXX			= g++
+RM			:= rm -rf
+CXX			?= g++
+MAKE		:= make -C
+MKDIR		:= mkdir -p
 
-MAKE		= make -C
+all: directories $(NAME)
 
-all: $(NAME)
+directories:
+	@for dir in $(SRCDIRS); \
+	do \
+		$(MKDIR) $(OBJDIR)/$$dir; \
+	done
 
-$(NAME): $(OBJ)
-	$(CXX) $(OBJ) $(LDFLAGS) -o $(NAME)
+$(NAME): $(OBJS)
+	$(CXX) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 clean:
-	$(RM) $(OBJ) $(OBJ_DEBUG) *.swp *~ *#
+	$(RM) $(OBJDIR)
 
-fclean: clean
+distclean: clean
 	$(RM) $(NAME) $(NAME_DEBUG)
 
-re: fclean all
+re: distclean all
 
 debug: CXXFLAGS += -ggdb3
-debug: $(OBJ_DEBUG)
-	$(CXX) $(OBJ_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
+debug: $(OBJS_DEBUG)
+	$(CXX) $(OBJS_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
 
-%.debug.o: %.cpp
+$(OBJDIR)/%.debug.o: %.cpp
+	@$(CXX) -MM -MF $(subst .debug.o,.debug.d,$@) -MP -MT $@ $(CXXFLAGS) $<
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-%.o: %.cpp
+$(OBJDIR)/%.o: %.cpp
+	@$(CXX) -MM -MF $(subst .o,.d,$@) -MP -MT $@ $(CXXFLAGS) $<
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-.PHONY: all clean fclean re debug
+ifneq "$(MAKECMDGOALS)" "clean"
+-include $(DEPS)
+endif
+
+.PHONY: all directories clean fclean re debug
