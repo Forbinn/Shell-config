@@ -24,14 +24,14 @@ OBJS		= $(SRCS:%.cpp=$(OBJDIR)/%.o)
 OBJS_DEBUG	= $(SRCS:%.cpp=$(OBJDIR)/%.debug.o)
 DEPS		= $(OBJS:%.o=%.d)
 
-RM			:= rm -rf
 CXX			?= g++
 MAKE		:= make -C
+RM			:= rm -rf
 MKDIR		:= mkdir -p
 
-all: directories $(NAME)
+all: $(OBJDIR) $(NAME)
 
-directories:
+$(OBJDIR):
 	@for dir in $(SRCDIRS); \
 	do \
 		$(MKDIR) $(OBJDIR)/$$dir; \
@@ -62,4 +62,4 @@ ifneq "$(MAKECMDGOALS)" "clean"
 -include $(DEPS)
 endif
 
-.PHONY: all directories clean distclean debug
+.PHONY: all clean distclean debug
