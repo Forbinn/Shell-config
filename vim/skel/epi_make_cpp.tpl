@@ -10,7 +10,7 @@
 
 SRCS		= main.cpp \
 
-CXXFLAGS	= -Wall -Wextra
+CXXFLAGS	+= -Wall -Wextra
 
 LDFLAGS		=
 
@@ -47,7 +47,7 @@ distclean: clean
 	$(RM) $(NAME) $(NAME_DEBUG)
 
 debug: CXXFLAGS += -ggdb3
-debug: $(OBJS_DEBUG)
+debug: $(OBJDIR) $(OBJS_DEBUG)
 	$(CXX) $(OBJS_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
 
 $(OBJDIR)/%.debug.o: %.cpp
@@ -59,7 +59,9 @@ $(OBJDIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 ifneq "$(MAKECMDGOALS)" "clean"
+ifneq "$(MAKECMDGOALS)" "distclean"
 -include $(DEPS)
+endif
 endif
 
 .PHONY: all clean distclean debug

@@ -10,14 +10,14 @@
 
 SRCS		= main.c \
 
-CFLAGS		= -Wall -Wextra
+CFLAGS		+= -Wall -Wextra
 
 LDFLAGS		=
 
 NAME		= a.out
 NAME_DEBUG	= $(NAME).debug
 
-OBJDIR		= obj
+OBJDIR		= .obj
 SRCDIRS		= $(shell find . -name "*.c" -exec dirname {} \; | uniq)
 
 OBJS		= $(SRCS:%.c=$(OBJDIR)/%.o)
@@ -47,7 +47,7 @@ distclean: clean
 	$(RM) $(NAME) $(NAME_DEBUG)
 
 debug: CFLAGS += -ggdb3
-debug: $(OBJS_DEBUG)
+debug: $(OBJDIR) $(OBJS_DEBUG)
 	$(CC) $(OBJS_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
 
 $(OBJDIR)/%.debug.o: %.c
@@ -59,7 +59,9 @@ $(OBJDIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ifneq "$(MAKECMDGOALS)" "clean"
+ifneq "$(MAKECMDGOALS)" "distclean"
 -include $(DEPS)
+endif
 endif
 
 .PHONY: all clean distclean re debug
