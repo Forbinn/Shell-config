@@ -44,13 +44,8 @@ runtime ftplugin/man.vim
 highlight ExtraWhitespaces  ctermbg=red guibg=red
 highlight ExtraCaractere    ctermbg=124 guibg=#A00000
 
-function! Handle_Spaces()
-    match ExtraWhitespaces /\s\+$/
-    "2match ExtraCaractere  /\%81v.\+/
-endfunction
-
-au BufNewFile {*.{c,cpp,h,hh,hpp},Makefile} call Epi_Header_Insert()
-au BufWritePre {*.{c,cpp,h,hh,hpp},Makefile} call UpdateHeaderDate()
+au BufNewFile {*.{c,cpp,h,hh,hpp},Makefile} call Header_Insert()
+"au BufWritePre {*.{c,cpp,h,hh,hpp},Makefile} call UpdateHeaderDate()
 au BufWinEnter,BufNew {*} call Handle_Spaces()
 au BufRead,BufNewFile {*.ino} set filetype=c
 
@@ -58,7 +53,6 @@ au BufRead,BufNewFile {*.ino} set filetype=c
 map <special> <F3> <esc>ggvG=<CR>
 map <special> <F4> <esc>:set relativenumber<CR>
 map <special> <F5> <esc>:set norelativenumber<CR>
-map <special> <F6> <esc>ggvGd:call Epi_CppHeader_Insert()<CR>
 map <special> <F7> <esc>:Ack <cword><CR>
 
 " Man shortcut
@@ -73,4 +67,5 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+" Completion shotcut
 imap <C-@> <C-N>

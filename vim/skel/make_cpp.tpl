@@ -1,21 +1,28 @@
-##
-## Makefile
-##
-## Made by @@AUTHOR@@
-## Login   <@@AUTHORMAIL@@>
-##
-## Started on  @@CDATE@@ @@AUTHOR@@
-## Last update @@MDATE@@ @@MAUTHOR@@
-##
+#
+# @@COPYRIGHT@@
+#
+# Made by @@AUTHOR@@
+# Mail <@@AUTHORMAIL@@>
+#
 
 SRCS		= main.cpp \
 
 CXXFLAGS	+= -Wall -Wextra
+ifeq "$(MAKECMDGOALS)" "debug"
+CXXFLAGS	+= -ggdb3
+else
+CXXFLAGS	+=
+endif
 
 LDFLAGS		=
+ifeq "$(MAKECMDGOALS)" "debug"
+LDFLAGS		+=
+else
+LDFLAGS		+=
+endif
 
 NAME		= a.out
-NAME_DEBUG	= $(NAME).debug
+NAME_DEBUG	= a.debug.out
 
 OBJDIR		= .obj
 SRCDIRS		= $(shell find . -name "*.cpp" -exec dirname {} \; | uniq)
@@ -46,7 +53,6 @@ clean:
 distclean: clean
 	$(RM) $(NAME) $(NAME_DEBUG)
 
-debug: CXXFLAGS += -ggdb3
 debug: $(OBJDIR) $(OBJS_DEBUG)
 	$(CXX) $(OBJS_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
 

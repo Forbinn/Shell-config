@@ -1,6 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/home/leroy_v/Domotique/domea/box/share/network/message'
-let g:netrw_dirhist_2='/usr/src/debug/qtbase-opensource-src-5.4.2/src/corelib/kernel'
-let g:netrw_dirhist_3='/home/leroy_v/Domotique/domea/box/share/event'
-let g:netrw_dirhist_4='/home/leroy_v/Perso/Huffman/include'
